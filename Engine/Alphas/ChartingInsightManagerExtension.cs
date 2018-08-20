@@ -162,19 +162,11 @@ namespace QuantConnect.Lean.Engine.Alphas
         /// <param name="context">The newly generated insight analysis context</param>
         public void OnInsightGenerated(InsightAnalysisContext context)
         {
-            if (!_dailyInsightCountPerSymbol.ContainsKey(context.Symbol))
-            {
-                _insightCountPerSymbol[context.Symbol] = 1;
-                _dailyInsightCountPerSymbol[context.Symbol] = 1;
-            }
-            else
-            {
-                // track total assets for life of backtest
-                _insightCountPerSymbol[context.Symbol] += 1;
+            _dailyInsightCountPerSymbol[context.Symbol] = _dailyInsightCountPerSymbol.ContainsKey(context.Symbol)
+                ? (_dailyInsightCountPerSymbol[context.Symbol] + 1): 1;
 
-                // track daily assets
-                _dailyInsightCountPerSymbol[context.Symbol] += 1;
-            }
+            _insightCountPerSymbol[context.Symbol] = _insightCountPerSymbol.ContainsKey(context.Symbol)
+                ? (_insightCountPerSymbol[context.Symbol] + 1): 1;
         }
 
         /// <summary>
